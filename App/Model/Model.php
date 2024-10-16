@@ -53,27 +53,39 @@ class Model extends Database {
         }
     }
 
-    public static function create($name) {
+    public static function create($data) {
+        // Create placeholders and column names from the array keys
+        $columns = implode(', ', array_keys($data));
+        $placeholders = ':' . implode(', :', array_keys($data));
+    
+        // Prepare the query
+        $query = "INSERT INTO " . static::$table_name . " ($columns) VALUES ($placeholders)";
+    
         try {
-            $query = "INSERT INTO " . static::$table_name . " (name) VALUES (:name)";
+            // Connect to the database
+            $conn = self::connect();
+            $stmt = $conn->prepare($query);
     
-            $stmt = self::connect()->prepare($query);
-    
-            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-    
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                $errorInfo = $stmt->errorInfo();
-                echo "Error executing query: " . $errorInfo[2];
-                return false;
+            // Bind parameters dynamically
+            foreach ($data as $key => $value) {
+                // Check if the key is 'password' and hash it using md5
+                if ($key == 'password') {
+                    $value = md5($value);
+                }
+                $stmt->bindValue(":$key", $value);
             }
     
+            // Execute the query
+            $stmt->execute();
+    
+            // Return the ID of the inserted row
+            return $conn->lastInsertId();
         } catch (PDOException $e) {
-            echo "Database error: " . $e->getMessage();
+            // Handle the error
             return false;
         }
     }
+    
 
     public static function register($data)
     {
@@ -95,17 +107,17 @@ class Model extends Database {
             if ($key == 'password') {
                 $value = md5($value);
             }
-            $values .= "'{$value}' , ";
+            $values .= "'{$value}' ,";
         }
         // dd($values);
 
         $cleanString = rtrim($values, ", ");
         // dd($cleanString);
-        $stmt = $conn->prepare("INSERT INTO " . Task::$table_name . " (title, description,user_id,status,image) VALUES (" . $cleanString . ")");
+        $stmt = $conn->prepare("INSERT INTO " . Task::$table_name . " (title, description,user_id,image) VALUES (" . $cleanString . ")");
         return $stmt->execute();
     }
 
-    public static function get_user($data){
+    public static function get_data($data){
 
         $values = '';   
         foreach($data as $key=>$value){
@@ -130,6 +142,7 @@ class Model extends Database {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
 
     

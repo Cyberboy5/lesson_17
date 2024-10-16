@@ -28,6 +28,23 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!-- Ekko Lightbox -->
+  <link rel="stylesheet" href="../plugins/ekko-lightbox/ekko-lightbox.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+
+  <link rel="styles
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -52,37 +69,21 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] == 'admin'){?>
+          <a href="/admin_page" class="nav-link">Home</a>
+        
+        <?php }else{ ?>
+          <a href="/user_page" class="nav-link">Home</a>
+       <?php }?>
       </li>
     </ul>
-
+    
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/logout" class="nav-link">Logout</a>
       </li>
-
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -103,43 +104,35 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             
             <?php
-                // if($_SESSION['user']['role'] == 'admin'){?>
-
+                if(isset($_SESSION['user']) && $_SESSION['user']['role'] == 'admin'){
+                  ?>
                     <li class="nav-item">
                         <a href="/admin_page" class="nav-link">
-                            <i class="bi bi-person-vcard-fill"></i>
-                            <p>
-                                Admin Page
-                            </p>
+                          <p><i class="bi bi-person-vcard-fill"></i>Admin Page</p>
                         </a>
                     </li>
-                <?php 
+
+                    <li class="nav-item">
+                        <a href="/users" class="nav-link">
+                            <p><i class="bi bi-person-badge-fill"></i>Users</p>
+                        </a>
+                    </li>
+
+                <?php } 
             ?>
 
             <li class="nav-item">
                 <a href="/user_page" class="nav-link">
-                    <p>
-                        <i class="bi bi-person-bounding-box"></i>
-                        User Page 
-                    </p>
+                    <p><i class="bi bi-person-bounding-box"></i>User Page</p>
                 </a>
             </li>
-
-            <li class="nav-item">
-                <a href="/users" class="nav-link">
-                    <p>
-                    <i class="bi bi-person-badge-fill"></i>
-                        Users 
-                    </p>
-                </a>
-            </li>
+                  
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
-
 
   <?= $content?>
 
@@ -202,6 +195,45 @@
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
     <!-- Page specific script -->
+
+    <!-- jQuery -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Ekko Lightbox -->
+    <script src="../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../dist/js/adminlte.min.js"></script>
+    <!-- Filterizr-->
+    <script src="../plugins/filterizr/jquery.filterizr.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../dist/js/demo.js"></script>
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+      $(function () {
+
+      })
+    </script>
+    <script>
+  $('#rejectTaskModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var taskId = button.data('task-id'); // Extract info from data-* attributes
+    
+    var modal = $(this);
+    modal.find('#modal_task_id').val(taskId); // Set task ID in the hidden input field
+  });
+</script>
+
     <script>
     $(function () {
         $("#example1").DataTable({

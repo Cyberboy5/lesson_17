@@ -3,7 +3,6 @@
 USE App\Controllers\Controller;
 use App\Controllers\TaskController;
 use App\Controllers\UserController;
-use App\Model\Task;
 use App\Routes\Route;
 
 // Main
@@ -27,5 +26,14 @@ Route::post('/editTaskPage',[TaskController::class,'editTask_page']);
 
 Route::post('/editTask',[TaskController::class,'editTask']);
 Route::post('/deleteTask',[TaskController::class,'deleteTask']);
+
+
+Route::get('/logout',[Controller::class,'logout']);
+Route::get('/user_page',[UserController::class,'user_page']);
+
+
+Route::post('/updateTaskStatus',[TaskController::class,'updateTaskStatus']);
+Route::post('/rejectTaskWithComment',[TaskController::class,'rejectTaskWithComment']);
+
 
 ?>

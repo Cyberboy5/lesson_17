@@ -56,10 +56,9 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
-          <label for=""><?= $_SESSION['registration_messeges']?>></label>
-          <?php unset($_SESSION['registration_messeges'])?>
         </div>
-
+        <label style="color:brown" for=""><?= isset($_SESSION['registration_messeges']) ? $_SESSION['registration_messeges']  : ''?></label>
+        <?php unset($_SESSION['registration_messeges'])?>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">

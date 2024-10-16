@@ -12,9 +12,10 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>To Do</h3>
-                <p>Tasks</p>
+              <h3>To Do</h3>
+              <h5><?= $data['status_counts']['todo_count']?> tasks</h5>
               </div>
+
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
@@ -32,7 +33,8 @@
               <div class="inner">
                 <h3>In Progress</h3>
 
-                <p>Tasks</p>
+                <h5><?= $data['status_counts']['in_progress_count']?> tasks</h5>
+
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -51,7 +53,7 @@
               <div class="inner">
                 <h3>Done</h3>
 
-                <p>Tasks</p>
+                <h5><?= $data['status_counts']['done_count']?> tasks </h5>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -70,7 +72,7 @@
               <div class="inner">
                 <h3>Rejacted</h3>
 
-                <p>Tasks</p>
+                <h5><?= $data['status_counts']['rejected_count']?> tasks </p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -118,8 +120,8 @@
                   <tbody>
                     
                     <?php
-                  // dd($data);
-                  foreach($data as $task){?>
+                  foreach($data['tasks'] as $task){
+                    ?>
                     <tr>
                       <td><?= $task['id']?></td>
                       <td><img src="<?= $task['image']?>" width="150px" alt="image"></td>

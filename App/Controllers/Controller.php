@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Model\Model;
-use App\Model\Task;
 use App\Model\User;
 
 class Controller{
@@ -25,8 +23,16 @@ class Controller{
                 'password' => $password
             ];
     
-            if(User::get_user($data)){
-                header("Location:/admin_page");
+            if(User::get_data($data)){
+                $_SESSION['user'] = User::get_data($data);
+                if($_SESSION['user']['role'] == 'admin'){
+                    header("Location:/admin_page");
+                }else{
+                    header("Location:/user_page");
+                }
+            }else{
+                $_SESSION['login_messeges'] = "Erro While Logging in User";
+                header("Location:/");
             }
         }
     }
@@ -44,25 +50,37 @@ class Controller{
             $password = htmlspecialchars(strip_tags($_POST['password']));
             $password_confirm = htmlspecialchars(strip_tags($_POST['password_confirm']));
     
-            if($password = $password_confirm){
+            // dd($password,$password_confirm);
+            if($password == $password_confirm){
                 $data = [
                     'name' => $name,
                     'email' => $email,
                     'password' => $password,
                 ];
         
-                if(User::register($data)){
+                if(User::create($data)){
+                    $_SESSION['user'] = User::get_data($data);
                     header("Location:/");
-
+                    return;
                 }else{
-                    $_SESSION['registration_messeges'] = "Erro While Registering User with this data: " .$data;
+                    $_SESSION['registration_messeges'] = "Erro While Registering User";
+
                 }
             }else{
-                $_SESSION['registration_messeges'] = "Check you passowrd again,please";
+                $_SESSION['registration_messeges'] = "Check you passoword again,please";
             }
         }else{
             $_SESSION['registration_messeges'] = "Please fill every field";
+            
         }
+        header("Location:/register");
+
+    }
+
+    public function logout(){
+        
+        unset($_SESSION['user']);
+        header("Location:/");
     }
 
 }

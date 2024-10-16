@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Model\Model;
 use App\Model\Task;
 use App\Model\User;
 
@@ -12,14 +11,13 @@ class UserController{
         if(isset($_POST['more_info']) && !empty($_POST['status'])){
             $status = $_POST['status'];
             $tasks = Task::getTasks($status);
+            dd($tasks);
         }else{
             $tasks = Task::getTasks();
         }
         // dd($tasks);
-
         return view('adminPage/index','Admin Page',$tasks);
     }
-
 
     public function users_page(){
         $users = User::getAll();
@@ -29,17 +27,25 @@ class UserController{
     public function activateUser(){
         
         if(isset($_POST['activate']) && !empty($_POST['id'])){
-            if(User::changeStatus($_POST['id'])){
+            if(User::changeStatus($_POST['id'],1)){
+                header("Location:/users");
+            }
+        }elseif(isset($_POST['deactivate']) && !empty($_POST['id'])){
+            if(User::changeStatus($_POST['id'],0)){
                 header("Location:/users");
             }
         }
     }
     
-
-
-
-
-
+    public function user_page(){
+        if($_SESSION['user']['status'] == 0){
+            return view('userPage/error','User Not Allowed');
+        }else{
+            $data = Task::getTasksByStatus();
+            return view('userPage/index','User Page',$data);
+        }
+        // dd($data);
+    }
 }
 
 ?>

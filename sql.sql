@@ -18,13 +18,14 @@ CREATE TABLE users (
 ALTER TABLE users
 ADD COLUMN status TINYINT(1) DEFAULT 0;
 
+DROP TABLE tasks;
 
 CREATE TABLE tasks (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255),
     description TEXT,
     user_id INT,
-    status ENUM('todo', 'in progress', 'done', 'rejected'),
+    status ENUM('todo', 'in progress', 'done', 'rejected') DEFAULT 'todo',
     comment TEXT,
     image VARCHAR(255)
 );

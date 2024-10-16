@@ -5,7 +5,7 @@
 
 
     <!-- Main content -->
-    <section class="content m-5">
+    <section class="content">
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -13,7 +13,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">General Form</h3>
+                <h3 class="card-title">Create New Task</h3>
               </div>
               <form action="/createTask" method="POST" enctype="multipart/form-data">
                 <div class="card-body">
@@ -36,14 +36,6 @@
                                 <option value="<?= $user['id']?>"><?= $user['name']?></option>
                             <?php }
                         ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="exampleInputstt">Status</label>
-                    <select name="status" class="form-control" id="exampleInputstat">
-                        <option selected value="todo">To Do</option>
-                        <option value="in progress">In Progress</option>
                     </select>
                   </div>
 

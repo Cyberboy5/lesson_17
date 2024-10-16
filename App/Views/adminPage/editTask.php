@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
 
     <!-- Main content -->
-    <section class="content m-5">
+    <section class="content">
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
@@ -11,7 +11,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Update Task</h3>
+                <h2 class="card-title">Update Task</h2>
               </div>
               <form action="/editTask" method="POST" enctype="multipart/form-data">
                 <div class="card-body">
@@ -45,18 +45,6 @@
                         <?php } ?>
                     </select>
                   </div>
-
-                  <!-- Status Field -->
-                  <div class="form-group">
-                    <label for="exampleInputstt">Status</label>
-                    <select name="status" class="form-control" id="exampleInputstat">
-                        <option value="todo" <?= ($_POST['status'] == 'todo') ? 'selected' : '' ?>>To Do</option>
-                        <option value="in progress" <?= ($_POST['status'] == 'in progress') ? 'selected' : '' ?>>In Progress</option>
-                        <option value="done" <?= ($_POST['status'] == 'done') ? 'selected' : '' ?>>Done</option>
-                        <option value="rejected" <?= ($_POST['status'] == 'rejected') ? 'selected' : '' ?>>Rejected</option>
-                    </select>
-                  </div>
-
                   <!-- File Input Field -->
                   <div class="form-group">
                     <label for="exampleInputFile">File input</label>

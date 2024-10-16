@@ -17,7 +17,6 @@ class TaskController{
         $title = htmlspecialchars(strip_tags($_POST['title']));
         $description = htmlspecialchars(strip_tags($_POST['description']));
         $user_id = (int) $_POST['user_id'];  // Casting user_id to integer
-        $status = htmlspecialchars(strip_tags($_POST['status']));
         
         $image = $_FILES['image'];
         $image_name = htmlspecialchars(strip_tags($image['name']));
@@ -39,7 +38,6 @@ class TaskController{
                     'title' => $title,
                     'description' => $description,
                     'user_id' => $user_id,
-                    'status' => $status,
                     'image_path' => $image_path,
                 ];
 
@@ -76,7 +74,6 @@ class TaskController{
             $title = htmlspecialchars(strip_tags($_POST['title']));
             $description = htmlspecialchars(strip_tags($_POST['description']));
             $user_id = (int) htmlspecialchars(strip_tags($_POST['user_id']));
-            $status = htmlspecialchars(strip_tags($_POST['status']));
             $comment = htmlspecialchars(strip_tags($_POST['comment']));
     
             $image_path = null;
@@ -106,7 +103,6 @@ class TaskController{
                 'title' => $title,
                 'description' => $description,
                 'user_id' => $user_id,
-                'status' => $status,
                 'comment' => $comment,
             ];
     
@@ -124,13 +120,34 @@ class TaskController{
 
     public function deleteTask() {
         $id = $_POST['id'];
-        // Execute the query
         if (Task::delete($id)){
            header("Location:/admin_page");
         } else {
             echo "Erro while Deleteing Task"; 
         }
     }
-}
 
+    public function updateTaskStatus(){
+       if (isset($_POST['task_id']) && isset($_POST['new_status'])) {
+            $taskId = $_POST['task_id'];
+            $newStatus = $_POST['new_status'];
+
+            if(Task::updateTaskStatus($taskId,$newStatus)){
+                header("Location:/user_page");
+            }else{
+                echo "Eror While Updating Task Status";
+            }
+        }
+    }
+
+    public function rejectTaskWithComment() {
+        $taskId = $_POST['task_id'];
+        $comment = $_POST['comment'];
+    
+        if(Task::rejectTaskComment($taskId,$comment)){
+            header("Location: /user_page");
+        }
+    }
+        
+}
 ?>

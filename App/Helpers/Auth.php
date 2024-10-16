@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Model\Model;
+use App\Model\User;
 
 class Auth{
 
@@ -22,7 +23,7 @@ class Auth{
 
     public static function get_user($data){
         
-        $users = Model::get_user($data);
+        $users = User::get_data($data);
         if($users){
             $_SESSION['auth'] = $users;
             return true;
