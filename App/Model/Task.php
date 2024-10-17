@@ -20,6 +20,9 @@ class Task extends Model{
                   FROM tasks
                   LEFT JOIN users ON tasks.user_id = users.id";
         
+        // Always include ORDER BY in the query
+        $query .= " ORDER BY tasks.id DESC";
+    
         // Query to count each status separately
         $countQuery = "SELECT 
                         SUM(CASE WHEN tasks.status = 'todo' THEN 1 ELSE 0 END) as todo_count,
@@ -33,13 +36,14 @@ class Task extends Model{
     
         // Prepare and execute task query
         if ($status) {
-            $query .= " WHERE tasks.status = :status";
+            $query .= " WHERE tasks.status = :status";  // Add WHERE clause before ORDER BY
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':status', $status, PDO::PARAM_STR);
         } else {
             $stmt = $conn->prepare($query);
         }
-        $query .= " ORDER BY id DESC";
+        
+        // Execute the query to get tasks
         $stmt->execute();
         $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -53,6 +57,7 @@ class Task extends Model{
             'status_counts' => $statusCounts
         ];
     }
+    
     
         
     public static function update($id, $data)
