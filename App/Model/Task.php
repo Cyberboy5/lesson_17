@@ -25,24 +25,25 @@ class Task extends Model{
                         SUM(CASE WHEN tasks.status = 'todo' THEN 1 ELSE 0 END) as todo_count,
                         SUM(CASE WHEN tasks.status = 'in progress' THEN 1 ELSE 0 END) as in_progress_count,
                         SUM(CASE WHEN tasks.status = 'done' THEN 1 ELSE 0 END) as done_count,
-                        SUM(CASE WHEN tasks.status = 'rejected' THEN 1 ELSE 0 END) as rejected_count
+                        SUM(CASE WHEN tasks.status = 'rejected' THEN 1 ELSE 0 END) as rejected_count,
+                        SUM(CASE WHEN tasks.status = 'completed' THEN 1 ELSE 0 END) as completed_count
                        FROM tasks";
         
         $conn = self::connect();
     
+        // Prepare and execute task query
         if ($status) {
             $query .= " WHERE tasks.status = :status";
-            
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':status', $status, PDO::PARAM_STR);
         } else {
             $stmt = $conn->prepare($query);
         }
-    
+        $query .= " ORDER BY id DESC";
         $stmt->execute();
         $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-        // Execute the count query for all statuses
+        // Prepare and execute the count query for all statuses
         $countStmt = $conn->prepare($countQuery);
         $countStmt->execute();
         $statusCounts = $countStmt->fetch(PDO::FETCH_ASSOC);
@@ -52,6 +53,7 @@ class Task extends Model{
             'status_counts' => $statusCounts
         ];
     }
+    
         
     public static function update($id, $data)
     {
@@ -80,13 +82,14 @@ class Task extends Model{
         $userId = $_SESSION['user']['id'];
         $isNonAdmin = $_SESSION['user']['role'] != 'admin';
         
-        $query = "SELECT 
-                    tasks.id, 
-                    tasks.title,
-                    tasks.description,
-                    tasks.status,
-                    tasks.comment  
-                FROM tasks";
+        $query = "SELECT tasks.id,
+                        tasks.title,
+                        tasks.description,
+                        tasks.status,
+                        users.name,
+                        tasks.comment  
+                FROM tasks
+                LEFT JOIN users ON tasks.user_id = users.id";
 
     
         if ($isNonAdmin) {
@@ -107,7 +110,8 @@ class Task extends Model{
             'todo' => [],
             'in_progress' => [],
             'done' => [],
-            'rejected' => []
+            'rejected' => [],
+            'completed' => []
         ];
     
         foreach ($tasks as $task) {
@@ -123,6 +127,9 @@ class Task extends Model{
                     break;
                 case 'rejected':
                     $data['rejected'][] = $task;
+                    break;
+                case 'completed':
+                    $data['completed'][] = $task;
                     break;
             }
         }
@@ -143,7 +150,7 @@ class Task extends Model{
         $query = "UPDATE tasks 
                   SET status = 'rejected', comment = :comment 
                   WHERE id = :task_id";
-    
+                      
         $conn = self::connect();
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);

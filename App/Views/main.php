@@ -219,20 +219,65 @@
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
     <!-- Page specific script -->
-    <script>
-      $(function () {
-
-      })
-    </script>
-    <script>
-  $('#rejectTaskModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var taskId = button.data('task-id'); // Extract info from data-* attributes
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    var modal = $(this);
-    modal.find('#modal_task_id').val(taskId); // Set task ID in the hidden input field
-  });
+<script>
+$(document).ready(function() {
+    // Handle the "eye" icon click to show task details in modal
+    $('[data-target="#taskInfoModal"]').on('click', function() {
+        var taskId = $(this).data('task-id');
+        var taskTitle = $(this).data('task-title');
+        var taskDescription = $(this).data('task-description');
+        var taskUser = $(this).data('task-user');
+        var taskStatus = $(this).data('task-status');
+        var taskComment = $(this).data('task-comment');
+        var taskImage = $(this).data('task-image');
+
+        // Set the modal fields
+        $('#taskTitle').text(taskTitle);
+        $('#taskDescription').text(taskDescription);
+        $('#taskUser').text(taskUser);
+        $('#taskStatus').text(taskStatus);
+        $('#taskComment').text(taskComment);
+        $('#taskImage').attr('src', taskImage);
+    });
+
+    // Handle the Complete/Reject Modal
+    $('[data-target="#completeRejectModal"]').on('click', function() {
+        var taskId = $(this).data('task-id');
+        var taskTitle = $(this).data('task-title');
+        var taskStatus = $(this).data('task-status');
+
+        // Set the modal fields
+        $('#modal-task-id').val(taskId);
+        $('#modal-task-title').val(taskTitle);
+        $('#modal-task-status').val(taskStatus);
+        $('#modal-task-id-display').text(taskId);
+        $('#modal-task-title-display').text(taskTitle);
+    });
+});
+
 </script>
+    <script>
+    $(document).ready(function() {
+      $('#rejectTaskModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var taskId = button.data('task-id'); // Extract task ID from data-* attributes
+
+        // Update the modal's hidden input field with the task ID
+        var modal = $(this);
+        modal.find('#modal_task_id').val(taskId);
+      });
+    });
+
+</script>
+
+<script>
+  function setRejectTaskId(taskId) {
+    document.getElementById('modal_task_id').value = taskId;
+  }
+</script>
+
 
     <script>
     $(function () {
@@ -251,6 +296,63 @@
         });
     });
     </script>
+
+<script>
+    $('#completeRejectModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var taskId = button.data('task-id'); // Extract task id from data-* attributes
+        var taskTitle = button.data('task-title');
+        var taskStatus = button.data('task-status');
+        
+        // Update the modal's content.
+        var modal = $(this);
+        modal.find('#task-id-display').text(taskId);
+        modal.find('#task-title-display').text(taskTitle);
+        modal.find('#modal-task-id').val(taskId);
+        modal.find('#modal-task-title').val(taskTitle);
+        modal.find('#modal-task-status').val(taskStatus);
+    });
+</script>
+
+<!-- <script>
+  let taskId;
+
+  // Open complete/reject modal and save task ID
+  $('#completeRejectModal').on('show.bs.modal', function(event) {
+    const button = $(event.relatedTarget); // Button that triggered the modal
+    taskId = button.data('task-id'); // Extract task ID from data-* attributes
+  });
+
+  // Handle Complete button
+  $('#completeTaskButton').click(function() {
+    // Send request to change the task status to 'completed'
+    $.post('/updateTaskStatus', { id: taskId, status: 'completed' }, function(response) {
+      // Reload the page or update the UI as needed
+      location.reload();
+    });
+  });
+
+  // Handle Reject button
+  $('#rejectTaskButton').click(function() {
+    // Show the reject comment modal
+    $('#completeRejectModal').modal('hide'); // Hide the first modal
+    $('#rejectCommentModal').modal('show'); // Show the comment modal
+  });
+
+  // Handle comment submission
+  $('#submitCommentButton').click(function() {
+    const comment = $('#commentTextArea').val();
+    if (comment.trim() !== '') {
+      // Send comment to the server
+      $.post('/addComment', { id: taskId, comment: comment }, function(response) {
+        // Reload the page or update the UI as needed
+        location.reload();
+      });
+    } else {
+      alert('Please enter a comment.');
+    }
+  });
+</script> -->
 
 </body>
 </html>

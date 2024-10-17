@@ -25,9 +25,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Role</th>
-                    <th>Status</th>
                     <th>Registration Date</th>
                     <th>Options</th>
                   </tr>
@@ -41,9 +39,7 @@
                       <td><?= $user['id']?></td>
                       <td><?= $user['name']?></td>
                       <td><?= $user['email']?></td>
-                      <td><?= $user['password']?></td>
                       <td><?= $user['role']?></td>
-                      <td><?= $user['status']?></td>
                       <td><?= $user['registration_date']?></td>
                     <?php
                         if($user['status'] == 0){?>
@@ -71,9 +67,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Role</th>
-                    <th>Status</th>
                     <th>Registration Date</th>
                     <th>Options</th>
 

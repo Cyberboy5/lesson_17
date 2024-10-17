@@ -61,17 +61,12 @@
                 </div>
                 <img class = 'm-1' src="<?= $_POST['image']?>" width="200px" alt="image">
                   </div>
-
-                  <!-- Example Check Field (if needed) -->
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                  </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
                   <button type="submit" name='submit' class="btn btn-primary">Submit</button>
+                  <a href = '/admin_page' class="btn btn-danger">Back</a>
                 </div>
               </form>
             </div>

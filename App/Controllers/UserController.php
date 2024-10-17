@@ -11,12 +11,16 @@ class UserController{
         if(isset($_POST['more_info']) && !empty($_POST['status'])){
             $status = $_POST['status'];
             $tasks = Task::getTasks($status);
-            dd($tasks);
+            // dd($tasks);
         }else{
             $tasks = Task::getTasks();
         }
+        if($_SESSION['user']['role'] == 'admin'){
+            return view('adminPage/index','Admin Page',$tasks);
+        }else{
+            return view2('auth/login','Login Page');
+        }
         // dd($tasks);
-        return view('adminPage/index','Admin Page',$tasks);
     }
 
     public function users_page(){

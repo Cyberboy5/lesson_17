@@ -85,7 +85,6 @@ class Model extends Database {
             return false;
         }
     }
-    
 
     public static function register($data)
     {

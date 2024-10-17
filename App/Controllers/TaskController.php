@@ -139,6 +139,29 @@ class TaskController{
             }
         }
     }
+    
+    public function handle_completion(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $taskId = $_POST['task_id'];
+            
+            if ($_POST['action'] === 'complete') {
+                if(Task::updateTaskStatus($taskId,'completed')){
+                    header('Location: /admin_page'); 
+                    exit;
+                }
+            } elseif ($_POST['action'] === 'reject') {
+                $comment = $_POST['reject_comment'];
+                if (empty($comment)) {
+                    echo "Comment is required for rejection.";
+                } else {
+                    if(Task::rejectTaskComment($taskId,$comment)){
+                        header('Location: /admin_page'); 
+                        exit;
+                    }
+                }
+            }
+        }
+    }
 
     public function rejectTaskWithComment() {
         $taskId = $_POST['task_id'];

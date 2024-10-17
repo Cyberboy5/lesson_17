@@ -25,7 +25,7 @@ CREATE TABLE tasks (
     title VARCHAR(255),
     description TEXT,
     user_id INT,
-    status ENUM('todo', 'in progress', 'done', 'rejected') DEFAULT 'todo',
+    status ENUM('todo', 'in progress', 'done', 'rejected',"completed") DEFAULT 'todo',
     comment TEXT,
     image VARCHAR(255)
 );

@@ -34,6 +34,7 @@ Route::get('/user_page',[UserController::class,'user_page']);
 
 Route::post('/updateTaskStatus',[TaskController::class,'updateTaskStatus']);
 Route::post('/rejectTaskWithComment',[TaskController::class,'rejectTaskWithComment']);
+Route::post('/handle_completion',[TaskController::class,'handle_completion']);
 
 
 ?>
